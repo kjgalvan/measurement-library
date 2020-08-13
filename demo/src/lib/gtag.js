@@ -8,6 +8,14 @@ export const pageview = (pagePath) => {
   window.gtag('config', GA_TRACKING_ID, {
     page_path: pagePath,
   });
+
+
+  window.measure('event', 'page_view', {
+    page_title: 'Prints of Poe',
+    page_path: pagePath,
+  })
+  console.log(window.measure);
+  console.log(window.dataLayer);
 };
 
 /**
@@ -22,4 +30,8 @@ export const event = (event, parameters) => {
     send_to: GA_TRACKING_ID,
     ...parameters,
   });
+
+  window.measure('event', event, {
+    ...parameters,
+  })
 };

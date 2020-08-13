@@ -89,4 +89,18 @@ describe('The initial configuration with setupMeasure', () => {
           }, 'name', {'1+2+...': '-1/12'});
     });
   });
+
+  describe('WIP', () => {
+    executeSnippetBeforeAndAfterSetup(/* config= */(measure) => {
+      measure('config', MockProcessor, {}, MockStorage, {});
+      measure('event', 'name', {'1+2+...': '-1/12'});
+    }, /* setup= */ () => {
+      expect(processEvent).toHaveBeenCalledTimes(1);
+      expect(processEvent).toHaveBeenCalledWith(
+          jasmine.any(MockStorage), {
+            get: jasmine.any(Function),
+            set: jasmine.any(Function),
+          }, 'name', {'1+2+...': '-1/12'});
+    });
+    });
 });
