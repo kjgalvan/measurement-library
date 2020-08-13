@@ -156,8 +156,37 @@ function registerEventAndSet_(helper, processor, storage) {
    *     the event.
    */
   function processEvent(name, options = undefined) {
+    /**
+     *  Perform a merge on the given list of objects. Any properties that both
+     *  the ith and jth (i less than j) objects both share will be overwritten
+     *  to have just the property of the jth object.
+     *  This jsdoc is needed so the compiler doesn't warn
+     *
+     *  @param {...} args The objects to merge.
+     *  @return {!Object<string, *>}
+     */
+    const merge = function(args) {
+      const result = {};
+      for (let i = 0; i < arguments.length; i++) {
+        const toMerge = arguments[i];
+        for (const prop in toMerge) {
+          if (toMerge.hasOwnProperty(prop)) {
+            result[prop] = toMerge[prop];
+          }
+        }
+      }
+      return result;
+    };
+
+    const getExtraOptions = (object) => {
+      if (object && object.hasOwnProperty('getName')) {
+        return helper.get(object.getName());
+      }
+      return {};
+    };
     const model = this;
     if (!options) options = {};
+    options = merge(getExtraOptions(processor), eventOptions, options);
     processor.processEvent(/** @type {!StorageInterface} */(storage),
       model, name, options);
   }
