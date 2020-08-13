@@ -109,7 +109,7 @@ function configProcessors(helper, eventProcessor, eventOptions,
     // A failure occurred, return now to prevent the page from crashing.
     return;
   }
-  registerEventAndSet_(helper, processor, storage);
+  registerEventAndSet_(helper, processor, storage, eventOptions);
 }
 
 /**
@@ -120,8 +120,10 @@ function configProcessors(helper, eventProcessor, eventOptions,
  * @param {!DataLayerHelper} helper
  * @param {!EventProcessor} processor
  * @param {!StorageInterface} storage
+ * @param {!Object<string, *>} eventOptions Options objects to pass to the
+ *    event processor.
  */
-function registerEventAndSet_(helper, processor, storage) {
+function registerEventAndSet_(helper, processor, storage, eventOptions) {
   /**
    * Check if a given key/value pair should be persisted in storage, and
    * if so, save it.
@@ -186,7 +188,7 @@ function registerEventAndSet_(helper, processor, storage) {
     };
     const model = this;
     if (!options) options = {};
-    options = merge(getExtraOptions(processor), options);
+    options = merge(getExtraOptions(processor), eventOptions, options);
     processor.processEvent(/** @type {!StorageInterface} */(storage),
       model, name, options);
   }
