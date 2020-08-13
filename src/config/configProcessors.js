@@ -109,9 +109,52 @@ function configProcessors(helper, eventProcessor, eventOptions,
     // A failure occurred, return now to prevent the page from crashing.
     return;
   }
+  registerEventAndSet_(helper, processor, storage);
+}
 
-  // Process an event object by sending it to the registered event processor
-  // along with interfaces to the storage and data layer helper.
+/**
+ * Register the set and event commands on the helper with the given
+ * processor/storage pair.
+ *
+ * @private
+ * @param {!DataLayerHelper} helper
+ * @param {!EventProcessor} processor
+ * @param {!StorageInterface} storage
+ */
+function registerEventAndSet_(helper, processor, storage) {
+  /**
+   * Check if a given key/value pair should be persisted in storage, and
+   * if so, save it.
+   *
+   * @param {string} key The key whose value you want to set.
+   * @param {*} value The value to assign to the key.
+   * @param {number=} secondsToLive The time for saved data to live.
+   *     If not passed, the eventProcessor will decide.
+   *     If -1, the storageInterface will decide.
+   *     If 0, nothing will be stored.
+   */
+  function processSet(key, value, secondsToLive = undefined) {
+    if (secondsToLive === undefined) {
+      secondsToLive = processor.persistTime(key, value);
+    }
+    // Don't save if the time to live is 0.
+    if (secondsToLive) {
+      if (secondsToLive === -1) {
+        storage.save(key, value);
+      } else {
+        storage.save(key, value, secondsToLive);
+      }
+    }
+  }
+
+  /**
+   * Process an event object by sending it to the registered event processor
+   * along with interfaces to the storage and data layer helper.
+   *
+   * @param {string} name The name of the event to process.
+   * @param {!Object<string, *>=} options The options object describing
+   *     the event.
+   */
   function processEvent(name, options = undefined) {
     const model = this;
     if (!options) options = {};
@@ -120,8 +163,12 @@ function configProcessors(helper, eventProcessor, eventOptions,
   }
 
   helper.registerProcessor('event', processEvent);
-  // TODO(wolfblue@): add set processing.
-  // helper.registerProcessor('set', processSet);
+  helper.registerProcessor('set', processSet);
 }
 
-exports = {configProcessors, buildProcessor_, buildStorage_};
+exports = {
+  configProcessors,
+  buildProcessor_,
+  buildStorage_,
+  registerEventAndSet_,
+};
