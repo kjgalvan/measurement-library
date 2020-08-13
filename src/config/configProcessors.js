@@ -186,7 +186,7 @@ function registerEventAndSet_(helper, processor, storage) {
     };
     const model = this;
     if (!options) options = {};
-    options = merge(getExtraOptions(processor), eventOptions, options);
+    options = merge(getExtraOptions(processor), options);
     processor.processEvent(/** @type {!StorageInterface} */(storage),
       model, name, options);
   }
