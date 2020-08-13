@@ -36,4 +36,5 @@ function setupMeasure(dataLayer) {
   helper.process();
 }
 
+goog.exportSymbol('setupMeasure', setupMeasure);
 exports = setupMeasure;
