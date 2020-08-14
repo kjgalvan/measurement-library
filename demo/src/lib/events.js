@@ -1,5 +1,5 @@
 import {v4} from 'uuid';
-import {event} from './gtag.js';
+import {event} from './measure.js';
 import {getItemsParameterFromSingleItem, getItemsAndValueParametersFromCart} from '../utils.js';
 
 /**

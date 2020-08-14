@@ -46,7 +46,7 @@ module.exports = function(grunt) {
         ],
         hide_warnings_for: 'google-closure-library',
         warning_level: 'VERBOSE',
-        compilation_level: 'WHITESPACE_ONLY',
+        compilation_level: 'ADVANCED_OPTIMIZATIONS',
         language_in: 'ECMASCRIPT6_STRICT',
         language_out: 'ECMASCRIPT5_STRICT',
         output_wrapper: '(function(){%output%})();',
@@ -63,7 +63,7 @@ module.exports = function(grunt) {
       },
       debug: {
         files: {
-          'demo/public/measure.js': 'src/main.js',
+          'dist/measure-debug.js': 'src/main.js',
         },
         options: {
           define: 'ML_DEBUG=true, DLH_DEBUG=true',
