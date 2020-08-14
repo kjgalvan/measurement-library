@@ -83,11 +83,13 @@ const ProductScreenBase = ({items, addToCart}) => {
               {buttonText}
             </Button>
             {displayModal()}
-            <Button variant="secondary" onClick={buyOnClick}
-              as={Link} to='/cart'>Buy Now</Button>
-            <CodeModal popupId={'addToCart'}
-              gtagCode={getAddToCartCodeSnippet(id)}
-              measureCode={getAddToCartCodeSnippet(id, 'measure')}/>
+            <div style={{marginLeft: 'auto'}}>
+              <Button variant="secondary" onClick={buyOnClick}
+                as={Link} to='/cart'>Buy Now</Button>
+              <CodeModal popupId={'addToCart'}
+                gtagCode={getAddToCartCodeSnippet(id)}
+                measureCode={getAddToCartCodeSnippet(id, 'measure')}/>
+            </div>
           </div>
         </div>
       </div>
